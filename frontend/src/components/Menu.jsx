@@ -1,6 +1,9 @@
 import React from 'react'
-import {data} from '../restApi.json'
+import { useDishes } from '../Context/Context';
+import { Link } from 'react-router-dom';
 const Menu = () => {
+  const data = useDishes();
+  const dishes=data.all_product;
   return (
     <>
       <section className='menu' id='menu'>
@@ -11,9 +14,10 @@ const Menu = () => {
             </div>
             <div className="dishes_container">
                 {
-                    data[0].dishes.map(element => (
+                    dishes.slice(0, 8).map(element => (
                         <div className="card" key={element.id}>
-                                <img src={element.image} alt={element.title} />
+                          <Link to={`/product/${element.id}`}><img onClick={window.scrollTo(0,0)} src={element.image} alt={element.title}/></Link>
+                                {/* <img src={element.image} alt={element.title} /> */}
                                 <h3>{element.title}</h3>
                                 <button>{element.category}</button>
                         </div>

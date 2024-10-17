@@ -11,7 +11,7 @@ const Reservation = () => {
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [phone, setPhone] = useState(0);
+  const [phone, setPhone] = useState("");
   const navigate = useNavigate();
 
   const handleReservation = async (e) => {
@@ -33,7 +33,7 @@ const Reservation = () => {
     toast.success(data.message);
     setFirstName("");
     setLastName("");
-    setPhone(0);
+    setPhone("");
     setEmail("");
     setTime("");
     setDate("");
@@ -52,7 +52,7 @@ const Reservation = () => {
         <div className="banner">
           <div className="reservation_form_box">
             <h1>MAKE A RESERVATION</h1>
-            <p>For Further Questions, Please Call</p>
+            <p>For Further Questions, Please Call (+91 7876601693)</p>
             <form>
               <div>
                 <input
@@ -92,7 +92,7 @@ const Reservation = () => {
                 />
                 <input
                   type="number"
-                  placeholder="Phone"
+                  placeholder="Phone (11 digits)"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                 />

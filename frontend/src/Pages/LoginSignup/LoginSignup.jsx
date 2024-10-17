@@ -30,6 +30,9 @@ const LoginSignup = () => {
       const responseData = await response.json();
       if (responseData.success) {
         localStorage.setItem('auth-token', responseData.token);
+        let user = formData.email.slice(0,10);
+        localStorage.setItem('email',formData.email);
+        localStorage.setItem('user',user);
         window.location.replace('/');
       } else {
         setError(responseData.errors);
@@ -56,6 +59,8 @@ const LoginSignup = () => {
       const responseData = await response.json();
       if (responseData.success) {
         localStorage.setItem('auth-token', responseData.token);
+        localStorage.setItem('user',formData.username);
+        localStorage.setItem('email',formData.email);
         window.location.replace('/');
       } else {
         setError(responseData.errors);

@@ -9,14 +9,13 @@ const AddProduct = () => {
     image:"",
     category:"Lunch",
     price:"",
+    kind:"Veg"
    
   })
   const imageHandler=(e)=>{
       setImage(e.target.files[0]);
   }
   const changeHandler=(e)=>{
-    
-   
     setProductDetails({...productDetails,[e.target.name]:e.target.value})
   }
 const Add_Product=async()=>{
@@ -51,7 +50,7 @@ const Add_Product=async()=>{
         image:"",
         category:"",
         price:"",
-
+        kind:""
       })}
       else{
       toast.error("Failed");
@@ -71,10 +70,6 @@ const Add_Product=async()=>{
           <p>Price</p>
           <input value={productDetails.price} onChange={changeHandler} type="text" name="price" placeholder='Type here'/>
         </div>
-        {/* <div className="addproduct-itemfield">
-          <p>Offer Price</p>
-          <input value={productDetails.new_price} onChange={changeHandler} type="text" name="new_price" placeholder='Type here'/>
-        </div> */}
       </div>
       <div className="addproduct-itemfield">
         <p>Category</p>
@@ -83,6 +78,15 @@ const Add_Product=async()=>{
           <option value='Dinner'>Dinner</option>
           <option value='Snacks'>Snacks</option>
           <option value='Breakfast'>Breakfast</option>
+          <option value='Deserts'>Deserts</option>
+        </select>
+      </div>
+      <div className="addproduct-itemfield">
+        <p>Type</p>
+        <select value={productDetails.kind} onChange={changeHandler} name="kind" className='add-product-selector'>
+          <option value='Veg'>Veg</option>
+          <option value='Non-Veg'>Non-Veg</option>
+         
         </select>
       </div>
       <div className="addproduct-itemfield">

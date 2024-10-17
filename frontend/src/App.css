@@ -444,10 +444,12 @@ nav svg {
   align-items: center;
 }
 .qualities .container {
-  min-width: 1500px;
-  max-width: 1500px;
+  min-width: auto;
+  max-width: 100px;
+  height:auto;
   display: flex;
   flex-wrap: wrap;
+  padding:10px;
 }
 .qualities .container .card {
   flex: 1;
@@ -455,21 +457,45 @@ nav svg {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 0 100px;
+  height:max-content;
 }
 .qualities .container .card img {
-  margin-bottom: 25px;
+  margin: 25px;
 }
 .qualities .container .card .title {
   font-size: 1.8rem;
   font-weight: 700;
   color: #111;
-  margin-bottom: 12px;
+ margin-bottom: 2px;
 }
 .qualities .container .card .description {
+  margin: 15px;
   font-size: 18px;
   color: #333;
-  font-weight: 300;
+  font-weight: 100;
+}
+.quality{
+  display: flex;
+  margin:0;
+  height: fit-content;
+  padding: 25px;
+  justify-content: center;
+  align-items: center;
+}
+.quality .btn {
+  width: 100%; 
+  padding: 10px 20px; 
+  font-size: 16px; 
+  border:black; 
+  border-radius: 5px; 
+  background-color:rgb(48, 40, 48); 
+  color: white; 
+  cursor: pointer; 
+  margin-top: 0;
+}
+
+.quality .btn:hover {
+  background-color: #97c499; /* Optional: Change background color on hover */
 }
 @media (max-width: 1520px) {
   .qualities .container {

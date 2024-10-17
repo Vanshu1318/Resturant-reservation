@@ -20,6 +20,10 @@ price:{
     type:Number,
     required:true,
 },
+kind:{
+type:String,
+required:true,
+},
 date:{
         type:Date,
         default:Date.now,

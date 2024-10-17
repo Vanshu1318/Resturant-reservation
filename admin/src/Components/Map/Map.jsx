@@ -1,33 +1,37 @@
 import React from 'react';
-// import { GoogleMap, Marker, LoadScript } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
-// const Map = ({ location }) => {
-//   const mapStyles = {
-//     height: '400px',
-//     width: '100%',
-//   };
-const Map =()=>{
+const mapContainerStyle = {
+  width: '100%',
+  height: '400px',
+};
+
+const center = {
+  lat: 31.377456,  
+  lng: 77.155623, 
+};
+
+const Map = () => {
   return (
-    // <LoadScript googleMapsApiKey="YOUR_API_KEY">
-    //   <GoogleMap
-    //     mapContainerStyle={mapStyles}
-    //     zoom={10}
-    //     center={location}
-    //   >
-    //     <Marker position={location} />
-    //   </GoogleMap>
-    // </LoadScript>
-    <div>
+    <>
     <h1>Gupta Traders</h1>
-    <iframe
-      width="600"
-      height="450"
-      
-      allowFullScreen
-      src="https://www.google.com/maps/place/Gupta+Traders,+Johar,+Thandapani/@31.3807042,77.1509657,17z/data=!3m1!4b1!4m6!3m5!1s0x39050b0bf46a84c5:0xd5570730bc99bfcb!8m2!3d31.3807042!4d77.1535406!16s%2Fg%2F11gyysmvv4?entry=ttu"
-    ></iframe>
-  </div>
+    <div>
+    <LoadScript googleMapsApiKey="AIzaSyBFOd44ec704YtNgdX7Qv11aB4GsYDCkVo">
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        center={center}
+        zoom={10}
+      >
+        <Marker position={center} />
+      </GoogleMap>
+    </LoadScript>
+    </div>
+    </>
   );
 };
 
 export default Map;
+
+
+
+

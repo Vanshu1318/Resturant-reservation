@@ -12,9 +12,9 @@ password:{
     type:String,
     
 },
-cartData:{
-    type:Object,
-},
+cartData: {
+    type:Object
+  },
 date:{
         type:Date,
         default:Date.now,

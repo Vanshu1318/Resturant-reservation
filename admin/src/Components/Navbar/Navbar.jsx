@@ -10,7 +10,7 @@ const Navbar =()=>{
            <Link to={'/map'}>
             <div className="logo">
             <img src={navlogo} alt="" className="nav-logo" />
-            <p>ᧁׁυׁׅ℘tׁׅɑׁׅ֮</p>
+            <p>Resturant</p>
             </div>
            </Link>
             <div className="profile">

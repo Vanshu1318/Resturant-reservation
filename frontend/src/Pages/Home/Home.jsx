@@ -7,17 +7,18 @@ import WhoAreWe from '../../components/WhoAreWe'
 import Team from '../../components/Team'
 import Reservation from '../../components/Reservation'
 import Footer from '../../components/Footer'
-
+// import Chatbot from '../Chatbot/Chatbot'
 const Home = () => {
   return (
     <>
       <HeroSection/>
       <About/>
-      <Qualities/>
       <Menu/>
       <WhoAreWe/>
       <Team/>
+      <Qualities/>
       <Reservation/>
+     
       <Footer/>
     </>
   )

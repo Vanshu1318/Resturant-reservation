@@ -1,32 +1,41 @@
-import React from 'react'
-import {data} from '../../../../frontend/src/restApi.json';
-import './Fav.css'; 
+import React,{useEffect,useState} from 'react'
+
 const Fav = () => {
+  const [allproducts, setAllProducts] = useState([]);
+
+  const fetchInfo = async () => {
+    await fetch('http://localhost:4000/allproducts')
+      .then((res) => res.json())
+      .then((data) => {
+        setAllProducts(data);
+      });
+  };
+
+  useEffect(() => {
+    fetchInfo();
+  }, []);
+
+ 
   return (
-    <>
-    <section className='menu' id='menu'>
-        <div className="container">
-            <div className="heading_section">
-                <h1 className="heading">Favorite DISHES</h1>
-               
+    <div className='list-product'>
+    <h1>FAV Products List</h1>
+    <h3>These are some most delivered and liked dishes by costomers.</h3>
+    <div className='listproduct-format-main'>
+      {allproducts.slice(7,16).map((product) => (
+        <React.Fragment key={product.id}>
+          <div className='listproduct-format-main listproduct-format'>
+            <img src={product.image} alt='' className='listproduct-product-icon' />
+            <p>{product.name}</p>
+            <p>₹{product.price}</p>
+            <p>{product.category}</p>
             </div>
-            <div className="dishes_container">
-                {
-                    data[0].dishes.map(element => (
-                        <div className="card" key={element.id}>
-                                {/* <img src={element.image} alt={element.title} /> */}
-                                <h3>{element.title}</h3>
-                                <button>{element.category}</button>
-                        </div>
-                    ))
-                }   
-            </div>
-        </div>
-        <p>fav dishes.....that comes from the feedback form from users..!</p>
-      </section>
-     
-    </>
-)
+          <hr />
+        </React.Fragment>
+      ))}
+    </div>
+  </div>
+
+  )
 }
 
-export default Fav;
+export default Fav

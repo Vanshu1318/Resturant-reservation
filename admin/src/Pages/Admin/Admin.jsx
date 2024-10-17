@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom'
 import AddProduct from "../../Components/AddProduct/AddProduct";
 import ListProduct from "../../Components/ListProduct/ListProduct";
  import Fav from '../../Components/FavDishes/Fav';
+ import Map from '../../Components/Map/Map';
 const Admin = () => {
     return(
         <div className="admin">
@@ -13,6 +14,7 @@ const Admin = () => {
             <Route path="/" element={<Fav/>} />
             <Route path="/addproduct" element={<AddProduct/>} />
             <Route path="/listproduct" element={<ListProduct/>} />
+            <Route path="/map" element={<Map/>}/>
         </Routes>
         {/* if route products valid then not show list products otherwise show */}
 

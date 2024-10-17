@@ -7,12 +7,14 @@ import { dbConnection } from "./database/dbConnection.js";
 import jwt from "jsonwebtoken";
 import {Users} from "./models/User.js";
 import {Dishes} from "./models/Dishes.js";
+// import { Configuration, OpenAIApi } from "openai";
+// import { Favoraites } from "./models/Favoraites";
 import multer from "multer";
 import path from "path";
+import { Reservation } from "./models/reservation.js";
 
 const app = express();
-dotenv.config({ path: "./config.env" });
-
+dotenv.config({ path: "./config.env" }); 
 const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];
 
 const corsOptions = {
@@ -23,6 +25,7 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
+  credentials: true, // Allow credentials
   optionsSuccessStatus: 200,
 };
 
@@ -42,7 +45,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/v1/reservation", reservationRouter);
 
-app.get("/", (req, res, next)=>{return res.status(200).json({
+app.get("/", (req, res)=>{return res.status(200).json({
   success: true,
   message: "HELLO WORLD AGAIN"
 })})
@@ -69,6 +72,35 @@ app.post('/upload',upload.single('product'),(req,res)=>{
       image_url:`http://localhost:${process.env.PORT}/images/${req.file.filename}`
   })
   })
+
+
+
+// OpenAI configuration
+// const configuration = new Configuration({
+//   apiKey: process.env.OPENAI_API_KEY,  // Stored in backend .env file
+// });
+// const openai = new OpenAIApi(configuration);
+
+// // Chatbot API endpoint
+// app.post("/api/chatbot", async (req, res) => {
+//   const { message } = req.body;
+
+//   try {
+//     const response = await openai.createCompletion({
+//       model: "text-davinci-003",
+//       prompt: message,
+//       max_tokens: 100,
+//     });
+
+//     const botResponse = response.data.choices[0].text;
+//     res.json({ response: botResponse });
+//   } catch (error) {
+//     console.error("OpenAI API error:", error);
+//     res.status(500).json({ error: "Error communicating with OpenAI API" });
+//   }
+// });
+
+
 
 
 //creating endpoint for registering the user
@@ -138,8 +170,8 @@ app.post('/addproduct',async(req,res)=>{
   else{
       id=1;
   }
- const {name,price,category,image}=req.body;
- const dish=new Dishes({id:id,name,price,category,image});
+ const {name,price,category,kind,image}=req.body;
+ const dish=new Dishes({id:id,name,price,category,kind,image});
  console.log(dish);
  await dish.save();
  console.log("saved successfully");
@@ -159,6 +191,16 @@ app.post('/removeproduct',async(req,res)=>{
   })
 })
 
+///Remove reservation of a user.
+
+app.post('/removereservation',async(req,res)=>{
+  await Reservation.findOneAndDelete({_id:req.body.id});
+  console.log("removed reservation successfully");
+  res.json({
+      success:true,
+  })
+})
+
 ////Creating API for getting all products
 
 app.get('/allproducts',async(req,res)=>{
@@ -167,23 +209,82 @@ app.get('/allproducts',async(req,res)=>{
   res.send(dishes);
 })
 
-//creating middleware to fetch user
-const fetchUser= async(req,res,next)=>{
-    const token=req.header('auth-token');
-    if(!token){
-        res.status(401).send({errors:"Please authenticate using valid token"})
-    }
-    else{
-        try{
-            const data=jwt.verify(token,'secret_ecom');
-            req.user=data.user;
-            next();
-        }catch(error){
-            res.status(401).send({errors:"please authenticate using a valid token"})
-        }
-    }
-}
 
+//Get all reservation 
+
+app.get('/allreservation',async(req,res)=>{
+  let reservation=await Reservation.find({});
+  console.log("All Reservation Fetched");
+  res.send(reservation);
+})
+
+
+//fetch user.
+
+const fetchUser = async (req, res, next) => {
+  const token = req.header('auth-token');
+  if (!token) {
+      return res.status(401).send({ errors: "Please authenticate using a valid token" });
+  }
+  try {
+      const data = jwt.verify(token, 'secret_ecom');
+      req.user = data.user;
+      next();
+  } catch (error) {
+      return res.status(401).send({ errors: "Invalid token" });
+  }
+};
+
+
+
+//creating endpoint for adding products in cartdata
+app.post('/addtocart', fetchUser, async (req, res) => {
+  console.log("added", req.body.itemId);
+  //if no user loged in no add in cart;
+  let userData = await Users.findOne({_id: req.user.id});
+  
+  // Initialize cartData if it's null
+  if (!userData.cartData) {
+    userData.cartData = new Map();
+  }
+  
+  // Initialize the item count if it doesn't exist
+  if (!userData.cartData[req.body.itemId]) {
+    userData.cartData[req.body.itemId] = 0;
+  }
+  
+  userData.cartData[req.body.itemId] += 1;
+  await Users.findOneAndUpdate({_id: req.user.id}, {cartData: userData.cartData}, {new: true});
+  
+  res.json("Added");
+});
+
+
+
+//creating endpoint to remove product from cart data
+app.post('/removefromcart', fetchUser, async (req, res) => {
+  console.log("removed", req.body.itemId);
+  let userData = await Users.findOne({_id: req.user.id});
+  
+  if (userData.cartData && userData.cartData[req.body.itemId] > 0) {
+    userData.cartData[req.body.itemId] -= 1;
+    await Users.findOneAndUpdate({_id: req.user.id}, {cartData: userData.cartData}, {new: true});
+    res.json("Removed");
+  } else {
+    res.status(400).json("Item not in cart or invalid quantity");
+  }
+});
+
+
+//creating endpoint to get cart data
+app.post('/getcart', fetchUser, async (req, res) => {
+  console.log("getcart");
+  let userData = await Users.findOne({_id: req.user.id});
+  if (!userData) {
+      return res.status(404).json({ error: "User not found" });
+  }
+  res.json(userData.cartData);
+});
 
 
 app.use(errorMiddleware);

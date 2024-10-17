@@ -1,31 +1,21 @@
 import React from "react";
-import { Link } from "react-scroll";
-import { useNavigate } from "react-router-dom";
-
-
 const Footer = () => {
-  const navigate=useNavigate();
-  const handleClick=()=>{
-    navigate('/feed');
-  }
-  return (
+ return (
     <footer>
       <div className="container">
-      <button className="menuBtn" onClick={handleClick}>Feedback!</button>
-      <br/><br/>
-        <div className="banner">
-          <div className="left">𝐴ⁿէʳ𝙞𝓀ȿĥ</div>
+      <div className="banner">
+          <div className="left">Antriksh</div>
           <div className="right">
-            <p>SharanPur</p>
-            <p>Open: 07:00 AM - 12:00 AM</p>
+            <p>Himachal Pradesh (175046)</p>
+            <p>Open: 24/7</p>
           </div>
         </div>
         <div className="banner">
           <div className="left">
-            <p>Developed By 𝐴ⁿէãʳ𝙞𝓀ȿĥ</p>
+            <p>Developed By Antriksh</p>
           </div>
           <div className="right">
-            <p>All Rights Reserved By 𝐴ⁿէãʳ𝙞𝓀ȿĥ.</p>
+            <p>All Rights Reserved By Antriksh</p>
           </div>
         </div>
       </div>
